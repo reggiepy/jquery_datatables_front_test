@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--第一步：引入Javascript / CSS （CDN）-->
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="js/jquery-3.5.1.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="js/jquery.dataTables.js"></script>
+</head>
+
+<body>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var data = [
+                [
+                    "Tiger Nixon",
+                    "System Architect",
+                    "Edinburgh",
+                    "5421",
+                    "2011/04/25",
+                    "$3,120"
+                ],
+                [
+                    "Garrett Winters1",
+                    "Director",
+                    "Edinburgh",
+                    "8422",
+                    "2011/07/25",
+                    "$5,300"
+                ],
+                [
+                    "Garrett Winters2",
+                    "Director",
+                    "Edinburgh",
+                    "8422",
+                    "2011/07/25",
+                    "$5,300"
+                ],
+                [
+                    "Garrett Winters3",
+                    "Director",
+                    "Edinburgh",
+                    "8422",
+                    "2011/07/25",
+                    "$5,300"
+                ],
+                [
+                    "Garrett Winters4",
+                    "Director",
+                    "Edinburgh",
+                    "8422",
+                    "2011/07/25",
+                    "$5,300"
+                ]
+            ]
+            //提示信息
+            var lang = {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "每页 _MENU_ 项",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+                "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页",
+                    "sJump": "跳转"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            };
+            var page_size = 1
+
+            var table = $('#example').DataTable({
+                "aLengthMenu": [
+                    [1, 2, 3],
+                    [1, 2, 3]
+                ],
+                "iDisplayLength": page_size,
+                language: lang,  //提示信息
+                // autoWidth: false,  //禁用自动调整列宽
+                // stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
+                // processing: true,  //隐藏加载提示,自行处理
+                // serverSide: true,  //启用服务器端分页
+                // searching: false,  //禁用原生搜索
+                // orderMulti: false,  //启用多列排序
+                // order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
+                // renderer: "jquery-ui",  //渲染样式：Bootstrap和jquery-ui
+                // pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
+                "iDisplayLength": 1,
+                data: data,
+                // "drawCallback": function (settings) {
+                //     var api = new $.fn.dataTable.Api(settings);
+
+                //     // Output the data for the visible rows to the browser's console
+                //     // You might do something more useful with it!
+                //     console.log(api.rows({ page: 'current' }).data());
+                // },
+                "footerCallback": function (tfoot, data, start, end, display) {
+                    var api = this.api();
+                    console.log("footerCallback", api, tfoot, data, start, end, display)
+                }
+            });
+            table
+                .on('order', function () {
+                    console.log("order");
+                })
+                .on('search', function () {
+                    console.log("search");
+                })
+                .on('page', function () {
+                    console.log("page");
+                }).on('page.dt', function () {
+                    console.log("page.dt")
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--第一步：引入Javascript / CSS （CDN）-->
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let json = {
+                "clazz": "agent.rpc_client.common_api.scheduler",
+                "method": "SchedulerApi.get_jobs",
+                "args": [],
+                "kwargs": {}
+            }
+            let data = JSON.stringify(json);
+            console.log(data);
+
+            $(function () {
+                $.ajax({
+                    url: 'http://127.0.0.1:6600/chemical-chaos/v1/rpc/common/',
+                    type: 'POST',
+                    async: false,
+                    contentType: "application/json",
+                    data: data,
+                    success: function (data) {
+                        if (data.code === 0) {
+                            console.log(data)
+                        } else {
+                            console.log("faild: ", data)
+                        }
+                    }
+                })
+            });
+            var table_data = [
+                [
+                    "Tiger Nixon",
+                    "System Architect",
+                    "Edinburgh",
+                    "5421",
+                    "2011/04/25",
+                    "$3,120"
+                ],
+                [
+                    "Garrett Winters",
+                    "Director",
+                    "Edinburgh",
+                    "8422",
+                    "2011/07/25",
+                    "$5,300"
+                ]
+            ]
+            var table = $('#example').DataTable({
+                "iDisplayLength": 1,
+                data: table_data,
+                "drawCallback": function (settings) {
+                    var api = new $.fn.dataTable.Api(settings);
+
+                    // Output the data for the visible rows to the browser's console
+                    // You might do something more useful with it!
+                    console.log(api.rows({ page: 'current' }).data());
+                },
+            }).api();
+            table
+                .on('order', function () {
+                    console.log("order");
+                })
+                .on('search', function () {
+                    console.log("search");
+                })
+                .on('page', function () {
+                    console.log("page");
+                });
+        });
+    </script>
+</body>
+
+</html>
